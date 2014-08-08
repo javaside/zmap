@@ -318,3 +318,17 @@ int redis_spush(char *redisqueuename,
 	return redis_push(redisqueuename, buf, num, len, "SADD");
 }
 
+int reids_cmd(char *redisqueuename,char *buf,const char *cmd){
+    assert(rctx);
+    
+    redisReply *reply;
+    reply = redisCommand(rctx,"%s %s %s", cmd, redisqueuename, buf);
+    if (reply->type == REDIS_REPLY_ERROR) {
+        log_fatal("redis", "%s", rctx->errstr);
+        return -1;
+    }
+    freeReplyObject(reply);
+    
+    return 0;
+}
+

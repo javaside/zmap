@@ -71,7 +71,37 @@ static int redismodule_flush(void)
 	return EXIT_SUCCESS;
 }
 
-int redismodule_process(fieldset_t *fs)
+int redismodule_process(fieldset_t *fs){
+    char *ip = malloc(16);
+    char *port = malloc(5);
+    
+    for (int i=0; i < fs->len; i++) {
+        field_t *f = &(fs->fields[i]);
+        if (f->type == FS_STRING) {
+            sprintf(ip,"%s", (char*) f->value.ptr);
+        } else if (f->type == FS_UINT64) {
+            sprintf(port,"%" PRIu64, (uint64_t) f->value.num);
+        } else if (f->type == FS_BINARY) {
+            //hex_encode(file, (unsigned char*) f->value.ptr, f->len);
+        } else if (f->type == FS_NULL) {
+            // do nothing
+        } else {
+            log_fatal("csv", "received unknown output type");
+        }
+    }
+    char *rs = malloc(21);
+    sprintf(rs,"%s,%s",ip,port);
+    
+    printf("%s",rs);
+    printf("\n");
+    
+    reids_cmd(queue_name,rs,"RPUSH");
+    free(ip);
+    free(port);
+    free(rs);
+}
+
+int redismodule_processold(fieldset_t *fs)
 {
 	field_t *f = &(fs->fields[field_index]);
 	buffer[buffer_fill] = (uint32_t) f->value.num;

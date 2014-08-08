@@ -50,4 +50,6 @@ uint32_t redis_getconf_uint32_t(const char*);
 
 int redis_setconf_uint32_t(const char*, uint32_t);
 
+int reids_cmd(char*,char*,const char*);
+
 #endif // _REDIS_ZHELPERS_H
