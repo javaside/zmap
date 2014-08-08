@@ -92,13 +92,12 @@ int redismodule_process(fieldset_t *fs){
     char *rs = malloc(21);
     sprintf(rs,"%s,%s",ip,port);
     
-    printf("%s",rs);
-    printf("\n");
     
     reids_cmd(queue_name,rs,"RPUSH");
     free(ip);
     free(port);
     free(rs);
+    return EXIT_SUCCESS;
 }
 
 int redismodule_processold(fieldset_t *fs)
