@@ -73,7 +73,7 @@ static int redismodule_flush(void)
 
 int redismodule_process(fieldset_t *fs){
     char *ip = malloc(16);
-    char *port = malloc(5);
+    char *port = malloc(6);
     
     for (int i=0; i < fs->len; i++) {
         field_t *f = &(fs->fields[i]);
@@ -89,7 +89,7 @@ int redismodule_process(fieldset_t *fs){
             log_fatal("csv", "received unknown output type");
         }
     }
-    char *rs = malloc(21);
+    char *rs = malloc(22);
     sprintf(rs,"%s,%s",ip,port);
     
     
